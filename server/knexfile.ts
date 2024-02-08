@@ -1,10 +1,10 @@
 /**
- * Connects client to MySQL DB instance
- * 
- * Locally, dotenv pulls secrets from .env file
- * In production, GitHub secrets or AWS SecretsManager would provide these fields
+ * @type { Object.<string, import("knex").Knex.Config> }
  */
-export const knexConfig = {
+require("dotenv").config();
+
+module.exports = {
+  development: {
     client: "mysql2",
     connection: {
         host: process.env.DB_HOST,
@@ -14,5 +14,12 @@ export const knexConfig = {
         user: process.env.DB_USER,
         password: process.env.DB_PASS,
         database: process.env.DB_NAME
+    },
+    migrations: {
+        directory: __dirname + "/src/database/migrations"
+    },
+    seeds: {
+        directory: __dirname + "/src/database/seeds"
     }
+  },
 };

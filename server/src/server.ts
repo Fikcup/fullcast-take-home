@@ -1,6 +1,6 @@
 import express from "express";
 
-import { knexConfig } from "./configs/database";
+import { knexConfig } from "./database/connection";
 import routes from "./routes";
 
 const app = express();

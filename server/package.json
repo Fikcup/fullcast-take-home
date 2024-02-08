@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "local": "ts-node -r dotenv/config ./src/server.ts",
-    "build": "tsc",
-    "start": "node ./build/server.js"
+    "seed:local": "knex seed:run"
   },
   "keywords": [],
   "author": "",
