@@ -4,8 +4,8 @@
  * Locally, dotenv pulls secrets from .env file
  * In production, GitHub secrets or AWS SecretsManager would provide these fields
  */
-const knex = require("knex")({
-    client: "mysql",
+export const knexConfig = {
+    client: "mysql2",
     connection: {
         host: process.env.DB_HOST,
         port: process.env.DB_PORT 
@@ -15,4 +15,4 @@ const knex = require("knex")({
         password: process.env.DB_PASS,
         database: process.env.DB_NAME
     }
-});
+};
