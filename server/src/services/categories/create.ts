@@ -7,6 +7,7 @@ import { CreateCategoryInput, CreateNoteInput } from "../../types/inputs";
 import { knexConfig } from "../../database/connection";
 import { Note } from "../../models/Note";
 import { createNote } from "../notes/create";
+import { CustomError } from "../../types/errors";
 
 /**
  * Creates a new category with an empty note field
@@ -46,7 +47,13 @@ export const createCategory = async (
         
         return category[0];
     } catch (err) {
-        console.error(err);
-        throw new Error(err);
+        throw new CustomError(
+            err.message 
+                ? err.message 
+                : "Bad Server Request", 
+            err.statusCode
+                ? err.statusCode
+                : 500
+        );
     }
 };

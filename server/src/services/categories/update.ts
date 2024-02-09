@@ -5,6 +5,7 @@ import knex from "knex";
 import { Category } from "../../models/Category";
 import { UpdateCategoryInput } from "../../types/inputs";
 import { knexConfig } from "../../database/connection";
+import { CustomError } from "../../types/errors";
 
 /**
  * Updates an existing category
@@ -37,7 +38,13 @@ export const updateCategory = async (
         
         return category[0];
     } catch (err) {
-        console.error(err);
-        throw new Error(err);
+        throw new CustomError(
+            err.message 
+                ? err.message 
+                : "Bad Server Request", 
+            err.statusCode
+                ? err.statusCode
+                : 500
+        );
     }
 };

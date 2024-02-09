@@ -6,6 +6,7 @@ import { Category } from "../../models/Category";
 import { SoftDeleteCategoryInput, SoftDeleteNoteInput } from "../../types/inputs";
 import { knexConfig } from "../../database/connection";
 import { softDeleteNotesByCategory } from "../notes/delete";
+import { CustomError } from "../../types/errors";
 
 /**
  * Soft deletes an existing category and associated note
@@ -46,7 +47,13 @@ export const softDeleteCategory = async (
 
         return;
     } catch (err) {
-        console.error(err);
-        throw new Error(err);
+        throw new CustomError(
+            err.message 
+                ? err.message 
+                : "Bad Server Request", 
+            err.statusCode
+                ? err.statusCode
+                : 500
+        );
     }
 };

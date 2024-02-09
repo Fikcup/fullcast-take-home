@@ -5,6 +5,7 @@ import knex from "knex";
 import { Note } from "../../models/Note";
 import { UpdateNoteInput } from "../../types/inputs";
 import { knexConfig } from "../../database/connection";
+import { CustomError } from "../../types/errors";
 
 /**
  * Updates an existing note
@@ -30,7 +31,13 @@ export const updateNote = async (
 
         return note[0];
     } catch (err) {
-        console.error(err);
-        throw new Error(err);
+        throw new CustomError(
+            err.message 
+                ? err.message 
+                : "Bad Server Request", 
+            err.statusCode
+                ? err.statusCode
+                : 500
+        );
     }
 };

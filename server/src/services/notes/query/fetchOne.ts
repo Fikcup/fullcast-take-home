@@ -39,7 +39,9 @@ export const fetchNote = async (
             err.message 
                 ? err.message 
                 : "Bad Server Request", 
-            500
+            err.statusCode
+                ? err.statusCode
+                : 500
         );
     }
 }

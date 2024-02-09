@@ -5,6 +5,7 @@ import knex from "knex";
 import { SoftDeleteNoteInput } from "../../types/inputs";
 import { knexConfig } from "../../database/connection";
 import { Note } from "../../models/Note";
+import { CustomError } from "../../types/errors";
 
 /**
  * Soft deletes an existing note
@@ -28,7 +29,13 @@ export const softDeleteNotesByCategory = async (
 
         return;
     } catch (err) {
-        console.error(err);
-        throw new Error(err);
+        throw new CustomError(
+            err.message 
+                ? err.message 
+                : "Bad Server Request", 
+            err.statusCode
+                ? err.statusCode
+                : 500
+        );
     }
 };

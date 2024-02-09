@@ -1,5 +1,5 @@
 // ext dependencies
-import { Router, Request, Response } from "express";
+import { Router, Request, Response, NextFunction } from "express";
 import { validationResult } from "express-validator";
 
 // int dependencies
@@ -19,7 +19,7 @@ router.route("/create")
      * Creates empty note on category creation
      */
     .post(validateCreateCategoryInput, async (
-        req: Request, res: Response
+        req: Request, res: Response, next: NextFunction
     ) => {
         try {
             // validates input
@@ -34,8 +34,7 @@ router.route("/create")
 
             res.status(201).json(category);
         } catch (err) {
-            console.error(err);
-            res.status(400).send({ message: "Bad Request" });
+            next(err);
         }
     });
 
@@ -45,7 +44,7 @@ router.route("/update")
      * Updates existing category
      */
     .patch(validateUpdateCategoryInput, async (
-        req: Request, res: Response
+        req: Request, res: Response, next: NextFunction
     ) => {
         try {
             // validates input
@@ -60,8 +59,7 @@ router.route("/update")
 
             res.status(200).json(category);
         } catch (err) {
-            console.error(err);
-            res.status(400).send({ message: "Bad Request" });
+            next(err);
         }
     });
 
@@ -70,7 +68,7 @@ router.route("/delete")
      * Soft deletes existing category
      */
     .patch(validateSoftDeleteCategoryInput, async (
-        req: Request, res: Response
+        req: Request, res: Response, next: NextFunction
     ) => {
         try {
             // validates input
@@ -85,8 +83,7 @@ router.route("/delete")
 
             res.status(200).json({ message: "success" });
         } catch (err) {
-            console.error(err);
-            res.status(400).send({ message: "Bad Request" });
+            next(err);
         }
     });
 

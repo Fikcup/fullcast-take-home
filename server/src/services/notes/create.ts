@@ -5,6 +5,7 @@ import knex from "knex";
 import { Note } from "../../models/Note";
 import { CreateNoteInput } from "../../types/inputs";
 import { knexConfig } from "../../database/connection";
+import { CustomError } from "../../types/errors";
 
 /**
  * Creates a new note
@@ -33,6 +34,13 @@ export const createNote = async (
 
         return note[0];
     } catch (err) {
-        throw new Error(err);
+        throw new CustomError(
+            err.message 
+                ? err.message 
+                : "Bad Server Request", 
+            err.statusCode
+                ? err.statusCode
+                : 500
+        );
     }
 };
