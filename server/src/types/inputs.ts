@@ -1,3 +1,7 @@
+export interface FetchNoteInput {
+    categoryId: number;
+}
+
 export interface CreateNoteInput {
     content: string;
     categoryId: number;

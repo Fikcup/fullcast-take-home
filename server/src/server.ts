@@ -3,6 +3,7 @@ import express, { Request, Response, NextFunction } from "express";
 
 // int dependencies
 import routes from "./routes";
+import { CustomError } from "./types/errors";
 
 const app = express();
 
@@ -10,10 +11,16 @@ app.use(express.json());
 app.use(routes);
 
 // TODO: import any middleware
+// TODO: improve error handling
 
-app.use((err: Error, _req: Request, res: Response, next: NextFunction) => {
+app.use((err: CustomError, _req: Request, res: Response, next: NextFunction) => {
     console.error(err.stack);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(err.statusCode || 500).json({ 
+        error: {
+            message: err.message,
+            stack: err.stack
+        } 
+    });
 });
 
 const port = process.env.PORT || 3000;

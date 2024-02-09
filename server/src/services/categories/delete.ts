@@ -19,6 +19,8 @@ export const softDeleteCategory = async (
     const { categoryId } = input;
 
     try {
+        // TODO: add transaction to allow for rollbacks if any step fails
+
         // fetch all ids of to be deleted categories
         const toDeleteCategoryIdObjects = await knex(knexConfig)<Category>("categories")
             .where("categoryId", categoryId)

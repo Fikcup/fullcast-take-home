@@ -20,6 +20,8 @@ export const createCategory = async (
     const { categoryName, parentCategoryId } = input;
 
     try {
+        // TODO: add transaction to allow for rollbacks if any step fails
+
         const insertResult: number[] = await knex(knexConfig)<Category>("categories")
             .insert(
                 {
