@@ -10,6 +10,7 @@ import { createCategory } from "../../services/categories/create";
 import { updateCategory } from "../../services/categories/update";
 import { softDeleteCategory } from "../../services/categories/delete";
 import { fetchAllCategories } from "../../services/categories/query/fetchAll";
+import { SortedCategory } from "../../types/transformers";
 
 const router = Router();
 
@@ -23,7 +24,7 @@ router.route("/")
     ) => {
         try {
             // category fetch request
-            const category: Category[][] = await fetchAllCategories();
+            const category: SortedCategory[] = await fetchAllCategories();
 
             res.status(201).json(category);
         } catch (err) {

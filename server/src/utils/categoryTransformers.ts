@@ -1,20 +1,40 @@
 import { Category } from "../models/Category";
+import { SortedCategory } from "../types/transformers";
 
 /**
- * Takes in unsorted categories and returns arrays of categories grouped by parentCategoryId
+ * Takes in unsorted categories and returns arrays of sorted categories
  * 
- * @param array Array of Categories
- * @returns Categories grouped by parentCategoryId
+ * @param array Array of Category
+ * @returns Array of SortedCategory
  */
 export const transformCategoryFetchArray = (
     array: Category[]
-): Category[][] => {
-    const transformCategoryFetchArray: Category[][] = Object.values(array.reduce((acc, obj) => {
-        const { parentCategoryId, categoryName, ...rest } = obj;
-        acc[parentCategoryId] = acc[parentCategoryId] || [];
-        acc[parentCategoryId].push({ categoryName, parentCategoryId, ...rest });
-        return acc;
-      }, {}))
-      
-    return transformCategoryFetchArray.map(group => group.sort((a, b) => a.categoryName.localeCompare(b.categoryName)));
+): SortedCategory[] => {
+    const childMap = array.reduce((map, child) => {
+        return {
+            ...map,
+            [child.categoryId]: {
+                ...child
+            }
+        };
+    }, {});
+
+    const root: SortedCategory[] = [];
+
+    Object.values(childMap).forEach((child: SortedCategory) => {
+        if (child.parentCategoryId) {
+            if (childMap[child.parentCategoryId]) {
+                const parent = childMap[child.parentCategoryId];
+                if (!parent.children) {
+                    parent.children = [];
+                }
+
+                parent.children.push(child)
+            }
+        } else {
+            root.push(child);
+        }
+    })
+
+    return root;
 };

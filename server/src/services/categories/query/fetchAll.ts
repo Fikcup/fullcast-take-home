@@ -6,8 +6,15 @@ import { Category } from "../../../models/Category";
 import { knexConfig } from "../../../database/connection";
 import { CustomError } from "../../../types/errors";
 import { transformCategoryFetchArray } from "../../../utils/categoryTransformers";
+import { SortedCategory } from "../../../types/transformers";
 
-export const fetchAllCategories = async () => {
+/**
+ * Fetches all active categories
+ * 
+ * @returns Categories sorted with nested children elements
+ */
+export const fetchAllCategories = async ()
+: Promise<SortedCategory[]> => {
     try {
         const categories = await knex(knexConfig)<Category>("categories")
             .select("*")
