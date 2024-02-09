@@ -11,7 +11,7 @@ import { CustomError } from "../../types/errors";
  * Soft deletes an existing note
  * 
  * @param input { categoryIds: number[] }
- * @param trx (optional)
+ * @param trx optional Knex transaction field
  * @returns void
  */
 export const softDeleteNotesByCategory = async (
