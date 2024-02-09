@@ -3,7 +3,7 @@ import knex from "knex";
 
 // int dependencies
 import { Category } from "../../models/Category";
-import { ChangeCategoryInput, ChangeNoteInput } from "../../types/inputs";
+import { CreateCategoryInput, ChangeNoteInput } from "../../types/inputs";
 import { knexConfig } from "../../database/connection";
 import { Note } from "../../models/Note";
 import { createNote } from "../notes/create";
@@ -11,11 +11,11 @@ import { createNote } from "../notes/create";
 /**
  * Creates a new category with an empty note field
  * 
- * @param input { categoryName: string, parentCategoryId: number}
+ * @param input { categoryName: string, parentCategoryId?: number}
  * @returns Category
  */
 export const createCategory = async (
-    input: ChangeCategoryInput
+    input: CreateCategoryInput
 ): Promise<Category> => {
     const { categoryName, parentCategoryId } = input;
 
