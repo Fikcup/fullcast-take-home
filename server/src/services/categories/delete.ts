@@ -7,6 +7,7 @@ import { SoftDeleteCategoryInput, SoftDeleteNoteInput } from "../../types/inputs
 import { knexConfig } from "../../database/connection";
 import { softDeleteNotesByCategory } from "../notes/delete";
 import { CustomError } from "../../types/errors";
+import { Note } from "../../models/Note";
 
 /**
  * Soft deletes an existing category and associated note
@@ -20,30 +21,29 @@ export const softDeleteCategory = async (
     const { categoryId } = input;
 
     try {
-        // TODO: add transaction to allow for rollbacks if any step fails
+        await knex(knexConfig).transaction(async (trx) => {
+            const toDeleteCategoryIdObjects = await trx<Category>("categories")
+                .where("categoryId", categoryId)
+                .orWhere("parentCategoryId", categoryId)
+                .select("categoryId");
+            const toDeleteCategoryIds: number[] = toDeleteCategoryIdObjects
+                .map(obj => Object.values(obj)[0]);
+            
+            // soft delete category and any child categories
+            await trx<Category>("categories")
+                .whereIn("categoryId", toDeleteCategoryIds)
+                .update(
+                    {
+                        deletedAt: new Date()
+                    }
+                );
 
-        // fetch all ids of to be deleted categories
-        const toDeleteCategoryIdObjects = await knex(knexConfig)<Category>("categories")
-            .where("categoryId", categoryId)
-            .orWhere("parentCategoryId", categoryId)
-            .select("categoryId");
-        const toDeleteCategoryIds: number[] = toDeleteCategoryIdObjects
-            .map(obj => Object.values(obj)[0]);
-        
-        // soft delete category and any child categories
-        await knex(knexConfig)<Category>("categories")
-            .whereIn("categoryId", toDeleteCategoryIds)
-            .update(
-                {
-                    deletedAt: new Date()
-                }
-            );
-
-        // soft delete associated notes
-        const noteInput: SoftDeleteNoteInput = { 
-            categoryIds: toDeleteCategoryIds 
-        };
-        await softDeleteNotesByCategory(noteInput);
+            // soft delete associated notes
+            const noteInput: SoftDeleteNoteInput = { 
+                categoryIds: toDeleteCategoryIds 
+            };
+            await softDeleteNotesByCategory(noteInput, trx<Note>("notes"));
+        });
 
         return;
     } catch (err) {

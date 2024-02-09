@@ -21,31 +21,33 @@ export const createCategory = async (
     const { categoryName, parentCategoryId } = input;
 
     try {
-        // TODO: add transaction to allow for rollbacks if any step fails
+        const categoryId: Category["categoryId"] = await knex(knexConfig).transaction(async (trx) => {
+            const insertResult: number[] = await trx<Category>("categories")
+                .insert(
+                    {
+                        categoryName,
+                        parentCategoryId
+                    }
+                );
 
-        const insertResult: number[] = await knex(knexConfig)<Category>("categories")
-            .insert(
-                {
-                    categoryName,
-                    parentCategoryId
-                }
-            );
-
-        await knex(knexConfig)<Note>("notes")
+            // empty note creation
+            const noteInput: CreateNoteInput = {
+                content: "",
+                categoryId: insertResult[0]
+            }
+            await createNote(noteInput, trx<Note>("notes"));
+            
+            return insertResult[0];
+        });
 
         // fetch newly created category
-        const category = await knex(knexConfig)<Category>("categories")
+        const result = await knex(knexConfig)<Category>("categories")
             .select("*")
-            .where("categoryId", insertResult[0]);
+            .first()
+            .where("categoryId", categoryId);
+           
+        return result;
 
-        // empty note creation
-        const noteInput: CreateNoteInput = {
-            content: "",
-            categoryId: category[0].categoryId
-        }
-        await createNote(noteInput);
-        
-        return category[0];
     } catch (err) {
         throw new CustomError(
             err.message 

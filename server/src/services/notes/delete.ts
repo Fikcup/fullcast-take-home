@@ -11,15 +11,18 @@ import { CustomError } from "../../types/errors";
  * Soft deletes an existing note
  * 
  * @param input { categoryIds: number[] }
+ * @param trx (optional)
  * @returns void
  */
 export const softDeleteNotesByCategory = async (
-    input: SoftDeleteNoteInput
+    input: SoftDeleteNoteInput,
+    trx?: knex.Knex.QueryBuilder<Note>
 ): Promise<void> => {
     const { categoryIds } = input;
 
     try {
-        await knex(knexConfig)<Note>("notes")
+        const notesRepo = trx ? trx : knex(knexConfig)<Note>("notes");
+        await notesRepo
             .whereIn("categoryId", categoryIds)
             .update(
                 {

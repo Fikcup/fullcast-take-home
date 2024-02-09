@@ -11,16 +11,18 @@ import { CustomError } from "../../types/errors";
  * Creates a new note
  * 
  * @param input { content: string, categoryId: number}
+ * @param trx optional Knex transaction field
  * @returns Note
  */
 export const createNote = async (
-    input: CreateNoteInput
+    input: CreateNoteInput,
+    trx?: knex.Knex.QueryBuilder<Note>
 ): Promise<Note> => {
     const { content, categoryId } = input;
 
     try {
-        const insertResult: number[] = await knex(knexConfig)<Note>("notes")
-            .insert(
+        const notesRepo = trx ? trx : knex(knexConfig)<Note>("notes");
+        const insertResult: number[] = await notesRepo.insert(
                 {
                     content,
                     categoryId
@@ -28,7 +30,7 @@ export const createNote = async (
             );
 
         // fetch newly created note
-        const note = await knex(knexConfig)<Note>("notes")
+        const note = await notesRepo
             .select("*")
             .where("noteId", insertResult[0]);
 
