@@ -9,8 +9,27 @@ import { Category } from "../../models/Category";
 import { createCategory } from "../../services/categories/create";
 import { updateCategory } from "../../services/categories/update";
 import { softDeleteCategory } from "../../services/categories/delete";
+import { fetchAllCategories } from "../../services/categories/query/fetchAll";
 
 const router = Router();
+
+// /api/categories
+router.route("/")
+    /**
+     * Fetches all categories and orders them by p
+     */
+    .get(async(
+        req: Request, res: Response, next: NextFunction
+    ) => {
+        try {
+            // category fetch request
+            const category: Category[][] = await fetchAllCategories();
+
+            res.status(201).json(category);
+        } catch (err) {
+            next(err);
+        }
+    });
 
 // /api/categories/create
 router.route("/create")

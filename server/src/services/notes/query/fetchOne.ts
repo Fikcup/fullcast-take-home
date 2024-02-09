@@ -5,7 +5,6 @@ import knex from "knex";
 import { Note } from "../../../models/Note";
 import { knexConfig } from "../../../database/connection";
 import { FetchNoteInput } from "../../../types/inputs";
-import { NextFunction } from "express";
 import { CustomError } from "../../../types/errors";
 
 /**
@@ -44,4 +43,4 @@ export const fetchNote = async (
                 : 500
         );
     }
-}
+};

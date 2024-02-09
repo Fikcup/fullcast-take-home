@@ -11,6 +11,7 @@ import { fetchNote } from "../../services/notes/query/fetchOne";
 
 const router = Router();
 
+// /api/notes
 router.route("/")
     /**
      * Fetches note associated with a category

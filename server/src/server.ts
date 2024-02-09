@@ -10,9 +10,6 @@ const app = express();
 app.use(express.json());
 app.use(routes);
 
-// TODO: import any middleware
-// TODO: improve error handling
-
 app.use((err: CustomError, _req: Request, res: Response, next: NextFunction) => {
     console.error(err.stack);
     res.status(err.statusCode || 500).json({ 
