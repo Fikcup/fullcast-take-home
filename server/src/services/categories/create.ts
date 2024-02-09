@@ -3,7 +3,7 @@ import knex from "knex";
 
 // int dependencies
 import { Category } from "../../models/Category";
-import { CreateCategoryInput, ChangeNoteInput } from "../../types/inputs";
+import { CreateCategoryInput, CreateNoteInput } from "../../types/inputs";
 import { knexConfig } from "../../database/connection";
 import { Note } from "../../models/Note";
 import { createNote } from "../notes/create";
@@ -36,7 +36,7 @@ export const createCategory = async (
             .where("categoryId", insertResult[0]);
 
         // empty note creation
-        const noteInput: ChangeNoteInput = {
+        const noteInput: CreateNoteInput = {
             content: "",
             categoryId: category[0].categoryId
         }
@@ -44,6 +44,7 @@ export const createCategory = async (
         
         return category[0];
     } catch (err) {
+        console.error(err);
         throw new Error(err);
     }
 };

@@ -3,14 +3,16 @@ import { Router, Request, Response } from "express";
 import { validationResult } from "express-validator";
 
 // int dependencies
-import { ChangeNoteInput } from "../../types/inputs";
+import { UpdateNoteInput } from "../../types/inputs";
 import { Note } from "../../models/Note";
-import { validateChangeNoteInput } from "../../types/validators";
+import { validateUpdateNoteInput } from "../../types/validators";
+import { updateNote } from "../../services/notes/update";
 
 const router = Router();
 
+// /api/notes/update
 router.route("/update")
-    .put(validateChangeNoteInput, async (
+    .patch(validateUpdateNoteInput, async (
         req: Request, res: Response
     ) => {
     try {
@@ -19,11 +21,12 @@ router.route("/update")
         if (!errors.isEmpty()) {
             res.status(400).json({ errors: errors.array() });
         }
-        const input: ChangeNoteInput = req.body;
+        const input: UpdateNoteInput = req.body;
 
-        // TODO: note update request
-        
-        // res.status(201).json(note);
+        // note update request
+        const note: Note = await updateNote(input);    
+
+        res.status(201).json(note);
     } catch (err) {
         console.error(err);
         res.status(400).send({ message: "Bad Request" });

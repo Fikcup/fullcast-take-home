@@ -55,7 +55,7 @@ router.route("/update")
             }
             const input: UpdateCategoryInput = req.body;
 
-            // category creation request
+            // category update request
             const category: Category = await updateCategory(input);
 
             res.status(200).json(category);
@@ -66,6 +66,9 @@ router.route("/update")
     });
 
 router.route("/delete")
+    /**
+     * Soft deletes existing category
+     */
     .patch(validateSoftDeleteCategoryInput, async (
         req: Request, res: Response
     ) => {
@@ -77,7 +80,7 @@ router.route("/delete")
             }
             const input: SoftDeleteCategoryInput = req.body;
 
-            // category creation request
+            // category deletion request
             await softDeleteCategory(input);
 
             res.status(200).json({ message: "success" });

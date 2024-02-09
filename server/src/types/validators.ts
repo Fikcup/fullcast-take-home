@@ -1,7 +1,16 @@
 import { body } from "express-validator";
 
-export const validateChangeNoteInput = [
+export const validateCreateNoteInput = [
     body("content").isString(),
+    body("categoryId").isInt({ min: 0 }),
+];
+
+export const validateUpdateNoteInput = [
+    body("noteId").isInt({ min: 0 }),
+    body("content").isString(),
+];
+
+export const validateSoftDeleteNoteInput = [
     body("categoryId").isInt({ min: 0 }),
 ];
 

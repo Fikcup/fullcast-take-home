@@ -27,7 +27,7 @@ export const updateCategory = async (
                         categoryName,
                         parentCategoryId
                     }
-                )
+                );
         }
 
         // fetch updated category
@@ -37,6 +37,7 @@ export const updateCategory = async (
         
         return category[0];
     } catch (err) {
+        console.error(err);
         throw new Error(err);
     }
 };

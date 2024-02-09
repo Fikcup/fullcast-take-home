@@ -1,10 +1,19 @@
+// ext dependencies
 import knex from "knex";
+
+// int dependencies
 import { Note } from "../../models/Note";
-import { ChangeNoteInput } from "../../types/inputs";
+import { CreateNoteInput } from "../../types/inputs";
 import { knexConfig } from "../../database/connection";
 
+/**
+ * Creates a new note
+ * 
+ * @param input { content: string, categoryId: number}
+ * @returns Note
+ */
 export const createNote = async (
-    input: ChangeNoteInput
+    input: CreateNoteInput
 ): Promise<Note> => {
     const { content, categoryId } = input;
 
@@ -17,6 +26,7 @@ export const createNote = async (
                 }
             );
 
+        // fetch newly created note
         const note = await knex(knexConfig)<Note>("notes")
             .select("*")
             .where("noteId", insertResult[0]);

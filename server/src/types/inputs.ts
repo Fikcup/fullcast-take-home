@@ -1,6 +1,15 @@
-export interface ChangeNoteInput {
+export interface CreateNoteInput {
     content: string;
     categoryId: number;
+}
+
+export interface UpdateNoteInput {
+    noteId: number;
+    content: string;
+}
+
+export interface SoftDeleteNoteInput {
+    categoryIds: number[];
 }
 
 export interface CreateCategoryInput {
