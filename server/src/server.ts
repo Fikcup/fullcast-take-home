@@ -1,5 +1,6 @@
 // ext dependencies
 import express, { Request, Response, NextFunction } from "express";
+import cors from "cors";
 
 // int dependencies
 import routes from "./routes";
@@ -8,6 +9,7 @@ import { CustomError } from "./types/errors";
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 app.use(routes);
 
 app.use((err: CustomError, _req: Request, res: Response, next: NextFunction) => {

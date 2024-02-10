@@ -26,7 +26,7 @@ router.route("/")
             // category fetch request
             const category: SortedCategory[] = await fetchAllCategories();
 
-            res.status(201).json(category);
+            res.status(200).json(category);
         } catch (err) {
             next(err);
         }
