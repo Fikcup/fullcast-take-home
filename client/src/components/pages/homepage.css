@@ -1,6 +1,7 @@
 .main {
     display: flex;
     flex-direction: row;
+    background-color: #FBF9F6;
 }
 
 .category-list {
