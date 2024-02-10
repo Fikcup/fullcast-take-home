@@ -6,3 +6,7 @@ export interface Category {
     updatedAt: Date;
     deletedAt: Date | null;
 };
+
+export interface SortedCategory extends Category {
+    children?: Category[];
+}

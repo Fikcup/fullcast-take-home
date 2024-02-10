@@ -1,0 +1,39 @@
+.accordion-item-parent {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px
+}
+
+.accordion-expand {
+    flex-direction: row;
+    padding: 10px;
+    width: 2.25rem;
+    border: solid black;
+}
+
+.accordion-item {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    width: 20rem;
+    justify-content: space-between;
+    border: solid black 3px;
+}
+
+.accordion-item:hover {
+    .accordion-update-delete {
+        visibility: visible;
+    }
+}
+
+.accordion-update-delete {
+    visibility: hidden;
+}
+
+.accordion-item:hover + .accordion-update-delete {
+    display: flex;
+}
+
+.hidden-accordion-expand-button {
+    visibility: hidden;
+}

@@ -1,0 +1,12 @@
+.accordion-item-parent {
+    display: flex;
+    flex-direction: row;
+}
+
+.accordion-expand {
+    width: 2.5rem;
+}
+
+.accordion-children {
+    margin-left: 2.5rem;
+}

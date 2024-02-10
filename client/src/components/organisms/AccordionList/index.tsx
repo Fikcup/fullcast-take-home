@@ -1,9 +1,9 @@
 import React from 'react';
 
-const DropdownList = () => {
+const AccordionList = () => {
     return (
         <div></div>
     );
 };
 
-export default DropdownList;
+export default AccordionList;
