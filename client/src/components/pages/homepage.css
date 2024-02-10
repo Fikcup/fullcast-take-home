@@ -1,0 +1,16 @@
+.main {
+    display: flex;
+    flex-direction: row;
+}
+
+.category-list {
+    padding-top: 2.5vh;
+    padding-left: 2.5vh;
+    flex-basis: 40%;
+    border-right: solid black 3px;
+    height: 100vh;
+}
+
+.notes {
+    flex-basis: 60%
+}
